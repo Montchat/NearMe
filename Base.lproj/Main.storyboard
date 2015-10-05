@@ -54,10 +54,10 @@
             </objects>
             <point key="canvasLocation" x="1562" y="-320"/>
         </scene>
-        <!--View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="48D-aS-Qlu">
             <objects>
-                <viewController storyboardIdentifier="DetailVC" id="Oyp-5W-vj0" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailVC" id="Oyp-5W-vj0" customClass="DetailViewController" customModule="NearMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mdz-ko-Okc"/>
                         <viewControllerLayoutGuide type="bottom" id="loR-te-SOY"/>
@@ -88,6 +88,9 @@
                             <constraint firstAttribute="trailing" secondItem="Meb-tt-eg9" secondAttribute="trailing" id="ZdO-Vs-Y5t"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="detailLabel" destination="8fu-Xq-srZ" id="nS4-lh-civ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NlW-WN-sxc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

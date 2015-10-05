@@ -9,6 +9,7 @@
 import UIKit
 
 class SecondViewController: UIViewController {
+    var detailString: String? = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()

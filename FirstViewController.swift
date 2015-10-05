@@ -12,19 +12,17 @@ import MapKit
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     @IBOutlet weak var myMapView: MKMapView!
-    
-    let lManager = CLLocationManager() //locationManager
+    let lManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        myMapView.delegate = self// a class can conform to multiple protocols
-        
-        lManager.requestWhenInUseAuthorization() // need to ask for location
-        lManager.delegate = self // the locatonManager needs to have an assigned delegate
-        myMapView.showsUserLocation = true // show the user location
-        lManager.startUpdatingLocation() // you want to keep updating the location. so tell the locationManager to keep updating location
-        lManager.requestLocation() // request the users location only one time
+        myMapView.delegate = self
+        myMapView.showsUserLocation = true
+
+        lManager.delegate = self
+        lManager.requestWhenInUseAuthorization()
+        lManager.startUpdatingLocation()
 
     }
 
@@ -44,19 +42,14 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             annotation.coordinate = location.coordinate
             myMapView.addAnnotation(annotation)
             
+            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.10, longitudeDelta: 0.10 ))
+            
+            self.myMapView.setRegion(region, animated: true)
+            
         }
         
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-    }
-    
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
-    }
-    
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        lManager.stopUpdatingLocation()
         
     }
     
@@ -66,9 +59,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-        annotationView.image = UIImage(named: "RedOval.png")
-        
-        mapView.dequeueReusableAnnotationViewWithIdentifier("pin")
+        annotationView.image = UIImage(named: "RedOval")
+
+//        mapView.dequeueReusableAnnotationViewWithIdentifier("pin")
 
         annotationView.canShowCallout = true
         
@@ -81,10 +74,10 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     func showDetail(button: UIButton) {
-        if let viewController = storyboard?.instantiateViewControllerWithIdentifier("DetailVC") {
+        if let viewController = storyboard?.instantiateViewControllerWithIdentifier("DetailVC") as? DetailViewController {
                 viewController.view.backgroundColor = UIColor.lightGrayColor()
                     navigationController?.pushViewController(viewController, animated: true)
-            
+
         }
         
     }
