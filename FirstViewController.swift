@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 
 class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
+    var textForString: String?
 
     @IBOutlet weak var myMapView: MKMapView!
     let lManager = CLLocationManager()
@@ -40,6 +42,8 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             annotation.title = "this is cool"
             annotation.subtitle = "and fun!"
             annotation.coordinate = location.coordinate
+            
+            textForString = annotation.title
             myMapView.addAnnotation(annotation)
             
             let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
@@ -53,6 +57,23 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
     }
     
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            let locationInView = touch.locationInView(view)
+            let convertedPoint = self.myMapView.convertPoint(locationInView, toCoordinateFromView: self.view)
+            
+            let annotation = MKPointAnnotation()
+            annotation.title = "this is also cool"
+            annotation.subtitle = "and also fun"
+            annotation.coordinate = convertedPoint
+            
+            textForString = annotation.title
+            myMapView.addAnnotation(annotation)
+            
+        }
+        
+    }
+    
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print(error)
     }
@@ -61,22 +82,24 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: "pin")
         annotationView.image = UIImage(named: "RedOval")
 
-//        mapView.dequeueReusableAnnotationViewWithIdentifier("pin")
+        mapView.dequeueReusableAnnotationViewWithIdentifier("pin")
 
         annotationView.canShowCallout = true
-        
+       
         let button = UIButton(type: .DetailDisclosure)
         button.addTarget(self, action: "showDetail:", forControlEvents: .TouchUpInside)
         annotationView.rightCalloutAccessoryView = button
         
         return annotationView
-        
+
     }
+    
     
     func showDetail(button: UIButton) {
         if let viewController = storyboard?.instantiateViewControllerWithIdentifier("DetailVC") as? DetailViewController {
                 viewController.view.backgroundColor = UIColor.lightGrayColor()
                     navigationController?.pushViewController(viewController, animated: true)
+            viewController.detailLabel?.text = textForString
 
         }
         
